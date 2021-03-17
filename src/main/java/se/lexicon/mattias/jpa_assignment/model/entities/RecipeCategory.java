@@ -1,11 +1,22 @@
 package se.lexicon.mattias.jpa_assignment.model.entities;
 
+import javax.persistence.*;
 import java.util.Collection;
 
+@Entity
 public class RecipeCategory {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int categoryId;
     private String category;
+
+    @ManyToMany( cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "recipe_recipe_category",
+            joinColumns = @JoinColumn(name = "recipe_category_id"),
+            inverseJoinColumns = @JoinColumn(name = "recipe_id")
+    )
     private Collection<Recipe> recipes;
 
     public RecipeCategory(int categoryId, String category, Collection<Recipe> recipes) {

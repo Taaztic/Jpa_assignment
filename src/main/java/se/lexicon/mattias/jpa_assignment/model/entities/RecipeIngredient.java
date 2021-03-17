@@ -1,13 +1,29 @@
 package se.lexicon.mattias.jpa_assignment.model.entities;
 
+import org.hibernate.annotations.GenericGenerator;
 import se.lexicon.mattias.jpa_assignment.model.extras.Measurement;
 
+import javax.persistence.*;
+
+
+
+@Entity
 public class RecipeIngredient {
 
+    @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String recipeIngredientId;
+
+    @ManyToOne
+    @JoinColumn(name = "ingredient_id", table = "recipe_ingredient")
     private Ingredient ingredient;
+
     private double amount;
     private Measurement measurement;
+
+    @ManyToOne
+    @JoinColumn(name = "recipe_id", table = "recipe_ingredient")
     private Recipe recipe;
 
     public RecipeIngredient(String recipeIngredientId, Ingredient ingredient, double amount, Measurement measurement, Recipe recipe) {

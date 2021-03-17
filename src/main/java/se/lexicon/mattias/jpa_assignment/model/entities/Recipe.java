@@ -1,13 +1,35 @@
 package se.lexicon.mattias.jpa_assignment.model.entities;
 
+import org.hibernate.annotations.Cascade;
+
+import javax.persistence.*;
 import java.util.Collection;
 
+@Entity
 public class Recipe {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int recipeId;
     private String recipeName;
+
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            mappedBy = "recipe"
+    )
     private Collection<RecipeIngredient> recipeIngredients;
+
+    @OneToOne(
+            cascade = CascadeType.ALL
+    )
     private RecipeInstruction recipeInstruction;
+
+    @ManyToMany( cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "recipe_recipe_category",
+            joinColumns = @JoinColumn(name = "recipe_id"),
+            inverseJoinColumns = @JoinColumn(name = "recipe_category_id")
+    )
     private Collection<RecipeCategory> categories;
 
     public Recipe(int recipeId, String recipeName, Collection<RecipeIngredient> recipeIngredients, RecipeInstruction recipeInstruction, Collection<RecipeCategory> categories) {
@@ -17,6 +39,8 @@ public class Recipe {
         this.recipeInstruction = recipeInstruction;
         this.categories = categories;
     }
+
+
 
     public Recipe() {
     }
